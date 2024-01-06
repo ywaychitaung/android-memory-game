@@ -14,6 +14,8 @@ import androidx.annotation.Nullable;
 public class MusicService extends Service {
     private MediaPlayer mediaPlayer;
     private Thread bgmSound;
+
+    private boolean isReceiverRegistered = false;
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -62,15 +64,26 @@ public class MusicService extends Service {
         bgmSound.interrupt();
         mediaPlayer.stop();
         mediaPlayer.release();
+
+        // Unregister the receiver if it was registered
+        if (isReceiverRegistered) {
+            unregisterReceiver(myReceiver);
+            isReceiverRegistered = false; // Set the flag to false
+        }
+        super.onDestroy();
     }
     @Override
     public void onLowMemory() {
     }
 
     public void register() {
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction("Stop BGM");
-        registerReceiver(myReceiver,intentFilter);
+        if (!isReceiverRegistered) {
+            IntentFilter intentFilter = new IntentFilter();
+            intentFilter.addAction("Stop BGM");
+            registerReceiver(myReceiver, intentFilter);
+            isReceiverRegistered = true; // Set the flag to true
+        }
     }
+
 
 }
