@@ -178,10 +178,10 @@ public class ImageAdapter extends ArrayAdapter<Bitmap> {
             rowImages = images.subList(start, end);
         }
 
-        // Set all the initial images to the cardback
-        imageView1.setImageResource(R.drawable.cardback);
-        imageView2.setImageResource(R.drawable.cardback);
-        imageView3.setImageResource(R.drawable.cardback);
+        // Set all the initial images to the image_placeholder
+        imageView1.setImageResource(R.drawable.image_placeholder);
+        imageView2.setImageResource(R.drawable.image_placeholder);
+        imageView3.setImageResource(R.drawable.image_placeholder);
 
         // Set click listeners for the ImageViews
         imageView1.setOnClickListener(new View.OnClickListener() {
@@ -251,7 +251,7 @@ public class ImageAdapter extends ArrayAdapter<Bitmap> {
             @Override
             public void onAnimationEnd(Animator animation) {
                 imageView.setVisibility(View.VISIBLE);
-                imageView.setImageResource(R.drawable.cardback);
+                imageView.setImageResource(R.drawable.image_placeholder);
                 super.onAnimationEnd(animation);
                 animator2.start();
             }
