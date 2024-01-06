@@ -43,7 +43,6 @@ public class CardActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_card);
-        getSupportActionBar().setTitle("Match them!");
 
         // Success matching sound Chime.mp3
         chime_mediaPlayer = MediaPlayer.create(this,R.raw.chime);

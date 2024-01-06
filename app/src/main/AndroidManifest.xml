@@ -31,8 +31,7 @@
             android:exported="false" />
         <activity
             android:name=".MainActivity"
-            android:exported="false"
-            android:label="Main Activity"></activity>
+            android:exported="false"></activity>
 
         <service android:name=".BackgroundSoundService" />
         <service android:name=".MusicService"/>

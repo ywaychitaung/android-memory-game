@@ -62,9 +62,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Change the action bar title
-        getSupportActionBar().setTitle("Choose Images");
-
         playBackgroundSound();
 
         urlEditText = findViewById(R.id.urlEditText);
