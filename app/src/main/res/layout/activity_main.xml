@@ -21,10 +21,10 @@
             android:hint="Enter URL" />
 
         <Button
-            android:id="@+id/loadButton"
+            android:id="@+id/fetchButton"
             android:layout_width="wrap_content"
             android:layout_height="55dp"
-            android:text="Load" />
+            android:text="Fetch" />
     </LinearLayout>
 
 

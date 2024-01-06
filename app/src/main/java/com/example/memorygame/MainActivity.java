@@ -43,7 +43,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private EditText urlEditText;
-    private Button loadButton;
+    private Button fetchButton;
     private List<ImageView> imageViews;
     private Button chooseButton;
     public List<Bitmap> selectedImages;
@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
         playBackgroundSound();
 
         urlEditText = findViewById(R.id.urlEditText);
-        loadButton = findViewById(R.id.loadButton);
+        fetchButton = findViewById(R.id.fetchButton);
         chooseButton = findViewById(R.id.choose);
         chooseButton.setEnabled(false);
         imageViews = new ArrayList<>();
@@ -79,13 +79,12 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // For starting the download: Checks if a url is entered
-        loadButton.setOnClickListener(new View.OnClickListener() {
+        fetchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(!isDownloading) {
                     String url = urlEditText.getText().toString();
                     if (!url.isEmpty()) {
-                        loadButton.setText("Stop");
                         downloadtask = new DownloadImagesTask();
                         downloadtask.execute(url);
                         isDownloading = true;
@@ -98,7 +97,6 @@ public class MainActivity extends AppCompatActivity {
                     downloadtask.cancel(true);
                     progressBar.setProgress(0);
                     progressBar.setVisibility(View.GONE);
-                    loadButton.setText("Load");
                     isDownloading = false;
                 }
 
@@ -209,7 +207,6 @@ public class MainActivity extends AppCompatActivity {
 
                 });
             }
-            loadButton.setText("Load");
             progressBar.setVisibility(View.GONE);
         }
     }
