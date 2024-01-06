@@ -17,9 +17,8 @@
         android:theme="@style/Theme.MemoryGame"
         tools:targetApi="31">
         <activity
-            android:name=".LaunchActivity"
-            android:exported="true"
-            android:theme="@style/Theme.AppCompat.NoActionBar">
+            android:name=".MainActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -29,9 +28,6 @@
         <activity
             android:name=".CardActivity"
             android:exported="false" />
-        <activity
-            android:name=".MainActivity"
-            android:exported="false"></activity>
 
         <service android:name=".BackgroundSoundService" />
         <service android:name=".MusicService"/>

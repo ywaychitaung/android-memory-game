@@ -146,7 +146,6 @@ public class CardActivity extends AppCompatActivity {
     }
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        Log.i("SavedInstanceState", "onSaveInstanceState is called");
         super.onSaveInstanceState(outState);
 
         outState.putInt("seconds", mSeconds);
@@ -155,7 +154,6 @@ public class CardActivity extends AppCompatActivity {
 
     @Override
     public void onRestoreInstanceState(Bundle savedInstanceState) {
-        Log.i("SavedInstanceState", "onRestoreInstanceState is called");
         super.onRestoreInstanceState(savedInstanceState);
 
         mSeconds = savedInstanceState.getInt("seconds");
