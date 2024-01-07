@@ -6,6 +6,7 @@ import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.media.MediaPlayer;
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,6 +51,26 @@ public class ImageAdapter extends ArrayAdapter<Bitmap> {
         }
     }
 
+    private MediaPlayer mediaPlayer;
+
+    private void playMatchSound() {
+        // Check if mediaPlayer is already in use and release it if necessary
+        if (mediaPlayer != null) {
+            mediaPlayer.release();
+        }
+        mediaPlayer = MediaPlayer.create(getContext(), R.raw.match_sound); // replace "match_sound" with the name of your audio file
+        mediaPlayer.start();
+
+        // Set an OnCompletionListener to release the MediaPlayer once the sound has finished playing
+        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                mediaPlayer.release();
+                mediaPlayer = null;
+            }
+        });
+    }
+
     @Override
     public int getCount() {
         return gameImagePairs.size() / 3;
@@ -87,6 +108,7 @@ public class ImageAdapter extends ArrayAdapter<Bitmap> {
             }
             else {
                 Toast.makeText(getContext(), "Matched!", Toast.LENGTH_SHORT).show();
+                playMatchSound();
                 ((GameActivity) getContext()).increaseScore(1);
                 this.score += 1;
 

@@ -58,13 +58,15 @@ public class ImageDownloadActivity extends AppCompatActivity {
 
         imageViews = new ArrayList<>();
 
-        for (int i = 1; i <= 4; i++) {
-            for (int j = 1; j <= 5; j++) {
-                int imageViewId = getResources().getIdentifier("imageView" + i + "_" + j, "id", getPackageName());
-                ImageView imageView = findViewById(imageViewId);
+        for (int row = 1; row <= 5; row++) {
+            for (int col = 1; col <= 4; col++) {
+                String imageViewId = "imageView" + row + "_" + col;
+                int imageId = getResources().getIdentifier(imageViewId, "id", getPackageName());
+                ImageView imageView = findViewById(imageId);
                 imageViews.add(imageView);
             }
         }
+
 
         fetchButton.setOnClickListener(new View.OnClickListener() {
             @Override
