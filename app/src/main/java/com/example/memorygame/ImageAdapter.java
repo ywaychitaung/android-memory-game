@@ -4,7 +4,6 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Handler;
@@ -20,28 +19,27 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ImageAdapter extends ArrayAdapter<Bitmap> {
-    private List<Bitmap> images;
-    private List<Integer> revealedImagesPositions;
-    private List<Integer> matchedImagesPositions;
+    private List<Bitmap> gameImagePairs;
+    private List<Integer> openImageIndices;
+    private List<Integer> matchedImageIndices;
     private List<ImageView> imageViews;
 
-    private List<ImageView> revealedImages;
+    private List<ImageView> currentOpenImages;
 
     private int score;
 
     public ImageAdapter(Context context, List<Bitmap> images, List<Integer> revealedImagesPositions,
                         List<Integer> matchedImagesPositions, List<ImageView> revealedImages, int score) {
         super(context, 0, images);
-        this.images = images;
-        this.revealedImagesPositions = revealedImagesPositions;
-        this.matchedImagesPositions = matchedImagesPositions;
-        this.revealedImages = revealedImages;
+        this.gameImagePairs = images;
+        this.openImageIndices = revealedImagesPositions;
+        this.matchedImageIndices = matchedImagesPositions;
+        this.currentOpenImages = revealedImages;
         this.score = score;
 
         this.imageViews = new ArrayList<>();
@@ -54,40 +52,34 @@ public class ImageAdapter extends ArrayAdapter<Bitmap> {
 
     @Override
     public int getCount() {
-        return images.size() / 3; // Divide by 3 to get the number of rows
+        return gameImagePairs.size() / 3; // Divide by 3 to get the number of rows
     }
 
     //pass imageView from clickListener
     private void handleImageClick(int rowPosition, int imagePosition, ImageView imageView) {
         int position = rowPosition * 3 + imagePosition;
 
-        if (matchedImagesPositions.contains(position) || revealedImagesPositions.contains(position)) {
+        if (matchedImageIndices.contains(position) || openImageIndices.contains(position)) {
             return;
         }
 
         uncoverImage(imageView, position);
 
-        if (revealedImagesPositions.isEmpty()) {
-            revealedImagesPositions.add(position);
-            revealedImages.add(imageView);
+        if (openImageIndices.isEmpty()) {
+            openImageIndices.add(position);
+            currentOpenImages.add(imageView);
             uncoverImage(imageView, position);
             return;
         }
 
-        if (images.get(revealedImagesPositions.get(0)).sameAs(images.get(position))) {
-            matchedImagesPositions.add(revealedImagesPositions.get(0));
-            matchedImagesPositions.add(position);
-            revealedImagesPositions.clear();
-            int matchedImgs = matchedImagesPositions.size();
-            int imgSize = images.size();
+        if (gameImagePairs.get(openImageIndices.get(0)).sameAs(gameImagePairs.get(position))) {
+            matchedImageIndices.add(openImageIndices.get(0));
+            matchedImageIndices.add(position);
+            openImageIndices.clear();
+            int matchedImgs = matchedImageIndices.size();
+            int imgSize = gameImagePairs.size();
 
             if(matchedImgs == imgSize){
-                this.score += 1;
-                ((GameActivity) getContext()).increaseScore(1);
-
-                ((GameActivity)getContext()).writeFile(score);
-                String time = ((GameActivity) getContext()).getTime();
-
                 Toast.makeText(getContext(), "Game Finished", Toast.LENGTH_SHORT).show();
 
                 Context context = getContext();
@@ -100,8 +92,8 @@ public class ImageAdapter extends ArrayAdapter<Bitmap> {
                 this.score += 1;
 
                 imageView.setOnClickListener(null);
-                revealedImages.get(0).setOnClickListener(null);
-                revealedImages.clear();
+                currentOpenImages.get(0).setOnClickListener(null);
+                currentOpenImages.clear();
             }
 
         } else {
@@ -109,10 +101,10 @@ public class ImageAdapter extends ArrayAdapter<Bitmap> {
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    coverImage(revealedImages.get(0));
+                    coverImage(currentOpenImages.get(0));
                     coverImage(imageView);
-                    revealedImagesPositions.clear();
-                    revealedImages.clear();
+                    openImageIndices.clear();
+                    currentOpenImages.clear();
                 }
             }, 1000);
 
@@ -135,10 +127,10 @@ public class ImageAdapter extends ArrayAdapter<Bitmap> {
         List<Bitmap> rowImages = new ArrayList<>();
 
         int start = position * 3;
-        int end = Math.min(start + 3, images.size());
+        int end = Math.min(start + 3, gameImagePairs.size());
 
         if (start < end) {
-            rowImages = images.subList(start, end);
+            rowImages = gameImagePairs.subList(start, end);
         }
 
         imageView1.setImageResource(R.drawable.image_placeholder);
@@ -210,7 +202,7 @@ public class ImageAdapter extends ArrayAdapter<Bitmap> {
             @Override
             public void onAnimationEnd(Animator animation) {
                 imageView.setVisibility(View.VISIBLE);
-                imageView.setImageBitmap(images.get(position));
+                imageView.setImageBitmap(gameImagePairs.get(position));
                 super.onAnimationEnd(animation);
                 animator2.start();
             }
