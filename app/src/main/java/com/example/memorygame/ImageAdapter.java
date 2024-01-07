@@ -55,7 +55,6 @@ public class ImageAdapter extends ArrayAdapter<Bitmap> {
         return gameImagePairs.size() / 3;
     }
 
-    //pass imageView from clickListener
     private void handleImageClick(int rowPosition, int imagePosition, ImageView imageView) {
         int position = rowPosition * 3 + imagePosition;
 
@@ -63,12 +62,12 @@ public class ImageAdapter extends ArrayAdapter<Bitmap> {
             return;
         }
 
-        uncoverImage(imageView, position);
+        showImage(imageView, position);
 
         if (openImageIndices.isEmpty()) {
             openImageIndices.add(position);
             currentOpenImages.add(imageView);
-            uncoverImage(imageView, position);
+            showImage(imageView, position);
             return;
         }
 
@@ -101,8 +100,8 @@ public class ImageAdapter extends ArrayAdapter<Bitmap> {
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    coverImage(currentOpenImages.get(0));
-                    coverImage(imageView);
+                    hideImage(currentOpenImages.get(0));
+                    hideImage(imageView);
                     openImageIndices.clear();
                     currentOpenImages.clear();
                 }
@@ -172,7 +171,7 @@ public class ImageAdapter extends ArrayAdapter<Bitmap> {
         return convertView;
     }
 
-    private void coverImage(ImageView imageView){
+    private void hideImage(ImageView imageView){
         ObjectAnimator animator1 = ObjectAnimator.ofFloat(imageView,
                 "scaleX", 1f, 0f);
         ObjectAnimator animator2 = ObjectAnimator.ofFloat(imageView,
@@ -191,7 +190,7 @@ public class ImageAdapter extends ArrayAdapter<Bitmap> {
         animator1.start();
     }
 
-    private void uncoverImage(ImageView imageView, int position){
+    private void showImage(ImageView imageView, int position){
         ObjectAnimator animator1 = ObjectAnimator.ofFloat(imageView,
                 "scaleX", 1f, 0f);
         ObjectAnimator animator2 = ObjectAnimator.ofFloat(imageView,
