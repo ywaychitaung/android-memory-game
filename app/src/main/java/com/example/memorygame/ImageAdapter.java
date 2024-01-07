@@ -61,17 +61,12 @@ public class ImageAdapter extends ArrayAdapter<Bitmap> {
     private void handleImageClick(int rowPosition, int imagePosition, ImageView imageView) {
         int position = rowPosition * 3 + imagePosition;
 
-        // If the image is already matched or currently revealed, do nothing
-        //please disable click listener after match
         if (matchedImagesPositions.contains(position) || revealedImagesPositions.contains(position)) {
             return;
         }
 
-        // Show the image
-        //revealImage(position);
         uncoverImage(imageView, position);
 
-        // If this is the first revealed image, just remember its position
         if (revealedImagesPositions.isEmpty()) {
             revealedImagesPositions.add(position);
             revealedImages.add(imageView);
@@ -79,7 +74,6 @@ public class ImageAdapter extends ArrayAdapter<Bitmap> {
             return;
         }
 
-        // If this is the second revealed image, check if it matches the first
         if (images.get(revealedImagesPositions.get(0)).sameAs(images.get(position))) {
             matchedImagesPositions.add(revealedImagesPositions.get(0));
             matchedImagesPositions.add(position);
