@@ -28,9 +28,6 @@
         <activity
             android:name=".CardActivity"
             android:exported="false" />
-
-        <service android:name=".BackgroundSoundService" />
-        <service android:name=".MusicService"/>
     </application>
 
 </manifest>

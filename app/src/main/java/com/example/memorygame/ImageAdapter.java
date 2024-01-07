@@ -34,21 +34,15 @@ public class ImageAdapter extends ArrayAdapter<Bitmap> {
 
     private List<ImageView> revealedImages;
 
-    private MediaPlayer chime_mediaPlayer;
-
-    private MediaPlayer wrong_mediaPlayer;
     private int score;
 
     public ImageAdapter(Context context, List<Bitmap> images, List<Integer> revealedImagesPositions,
-                        List<Integer> matchedImagesPositions, List<ImageView> revealedImages, int score,
-                        MediaPlayer chime_mediaPlayer, MediaPlayer wrong_mediaPlayer) {
+                        List<Integer> matchedImagesPositions, List<ImageView> revealedImages, int score) {
         super(context, 0, images);
         this.images = images;
         this.revealedImagesPositions = revealedImagesPositions;
         this.matchedImagesPositions = matchedImagesPositions;
         this.revealedImages = revealedImages;
-        this.chime_mediaPlayer = chime_mediaPlayer;
-        this.wrong_mediaPlayer = wrong_mediaPlayer;
         this.score = score;
 
         this.imageViews = new ArrayList<>();
@@ -128,9 +122,6 @@ public class ImageAdapter extends ArrayAdapter<Bitmap> {
                 ((CardActivity) getContext()).increaseScore(1);
                 this.score += 1;
 
-                // Chime for success
-                chime_mediaPlayer.start();
-
                 // disable clicking
                 imageView.setOnClickListener(null);
                 revealedImages.get(0).setOnClickListener(null);
@@ -144,7 +135,6 @@ public class ImageAdapter extends ArrayAdapter<Bitmap> {
                 @Override
                 public void run() {
                     coverImage(revealedImages.get(0));
-                    wrong_mediaPlayer.start();
                     coverImage(imageView);
                     revealedImagesPositions.clear();
                     revealedImages.clear();
@@ -258,6 +248,5 @@ public class ImageAdapter extends ArrayAdapter<Bitmap> {
         });
         animator1.start();
     }
-
 
 }

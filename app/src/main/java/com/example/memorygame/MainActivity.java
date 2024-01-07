@@ -50,8 +50,6 @@ public class MainActivity extends AppCompatActivity {
 
     private ProgressBar progressBar;
 
-    private Intent BgmSoundIntent;
-
     // handle stopping download
     private boolean isDownloading;
     private DownloadImagesTask downloadtask;
@@ -61,8 +59,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        playBackgroundSound();
 
         urlEditText = findViewById(R.id.urlEditText);
         fetchButton = findViewById(R.id.fetchButton);
@@ -292,33 +288,19 @@ public class MainActivity extends AppCompatActivity {
         return data;
     }
 
-    public void playBackgroundSound(){
-        BgmSoundIntent = new Intent(this, MusicService.class);
-        startService(BgmSoundIntent);
-    }
-
-    public void stopBackgroundSound(){
-        if(BgmSoundIntent !=null){
-            stopService(BgmSoundIntent);
-        }
-    }
-
     @Override
     protected void onPause() {
         super.onPause();
-        stopBackgroundSound();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        stopBackgroundSound();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        playBackgroundSound();
     }
 
 }

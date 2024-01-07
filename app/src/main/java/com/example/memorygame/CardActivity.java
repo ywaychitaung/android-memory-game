@@ -31,25 +31,10 @@ public class CardActivity extends AppCompatActivity {
 
     private int mSeconds;
 
-    //background sound intent
-    private Intent backgroundSoundIntent;
-
-    //play matching sound
-    private MediaPlayer chime_mediaPlayer;
-
-    private MediaPlayer wrong_mediaPlayer;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_card);
-
-        // Success matching sound Chime.mp3
-        chime_mediaPlayer = MediaPlayer.create(this,R.raw.chime);
-        chime_mediaPlayer.setVolume(100, 100);
-
-        wrong_mediaPlayer = MediaPlayer.create(this,R.raw.wrong);
-        wrong_mediaPlayer.setVolume(30,30);
 
         revealedImagesPositions = new ArrayList<>();
         matchedImagesPositions = new ArrayList<>();
@@ -78,11 +63,9 @@ public class CardActivity extends AppCompatActivity {
 
         // Display the shuffled duplicated images in a ListView
         ListView listView = findViewById(R.id.listView);
-        ImageAdapter adapter = new ImageAdapter(this, duplicatedImages, revealedImagesPositions, matchedImagesPositions,revealedImage,score, chime_mediaPlayer,wrong_mediaPlayer);
+        ImageAdapter adapter = new ImageAdapter(this, duplicatedImages, revealedImagesPositions, matchedImagesPositions,revealedImage,score);
 
         listView.setAdapter(adapter);
-        playBackgroundSound();
-        Toast.makeText(this, "Playing Music", Toast.LENGTH_SHORT).show();
         runTimer();
     }
 
@@ -162,34 +145,19 @@ public class CardActivity extends AppCompatActivity {
 
     }
 
-    public void playBackgroundSound(){
-        backgroundSoundIntent = new Intent(this, BackgroundSoundService.class);
-        startService(backgroundSoundIntent);
-    }
-    public void stopBackgroundSound(){
-        if(backgroundSoundIntent !=null){
-            stopService(backgroundSoundIntent);
-        }
-    }
-
     @Override
     protected void onPause() {
         super.onPause();
-        stopBackgroundSound();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        stopBackgroundSound();
-        chime_mediaPlayer.release();
-        wrong_mediaPlayer.release();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        playBackgroundSound();
     }
 
 }
