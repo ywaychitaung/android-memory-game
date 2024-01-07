@@ -87,26 +87,12 @@ public class ImageAdapter extends ArrayAdapter<Bitmap> {
 
                 ((GameActivity)getContext()).writeFile(score);
                 String time = ((GameActivity) getContext()).getTime();
-                AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
-                dialog.setTitle("Congratulations!");
-                dialog.setMessage("Score: "+ score+" \nTime: "+time);
-                dialog.setPositiveButton("Play again", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        Context context = dialog.getContext();
-                        Intent intent = new Intent(context, GameActivity.class);
-                        context.startActivity(intent);
-                    }
-                });
-                dialog.setNegativeButton("Back to Home", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        Context context = dialog.getContext();
-                        Intent intent = new Intent(context, ImageDownloadActivity.class);
-                        context.startActivity(intent);
-                    }
-                });
-                dialog.show();
+
+                Toast.makeText(getContext(), "Game Finished", Toast.LENGTH_SHORT).show();
+
+                Context context = getContext();
+                Intent intent = new Intent(context, ImageDownloadActivity.class);
+                context.startActivity(intent);
             }
             else {
                 Toast.makeText(getContext(), "Matched!", Toast.LENGTH_SHORT).show();
@@ -138,7 +124,7 @@ public class ImageAdapter extends ArrayAdapter<Bitmap> {
     public View getView(final int position, @Nullable View convertView,
                         @NonNull ViewGroup parent) {
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.layout, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.image_layout, parent, false);
         }
 
         LinearLayout layout = convertView.findViewById(R.id.listView);

@@ -214,7 +214,7 @@ public class ImageDownloadActivity extends AppCompatActivity {
 
     public String readFile(){
         String filePath = "MemoryGame";
-        String filename = "ScoreHistory.txt";
+        String filename = "Score.txt";
         File targetFile = new File(this.getFilesDir(),filePath+"/"+filename);
 
         String data = "";
