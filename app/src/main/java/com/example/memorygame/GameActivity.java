@@ -68,7 +68,7 @@ public class GameActivity extends AppCompatActivity {
         String[] time = timer.getText().toString().split(" ");
         return time[2];
     }
-    
+
     private void updateScoreText() {
         scoreDisplay.setText(score + " of 6 matches");
     }
@@ -87,7 +87,7 @@ public class GameActivity extends AppCompatActivity {
                 int minutes = secondsElapsed / 60;
                 int seconds = secondsElapsed % 60;
                 String timeString = String.format("%02d:%02d", minutes, seconds);
-                timer.setText("Time elapsed: " + timeString);
+                timer.setText("Time: " + timeString);
 
                 secondsElapsed++;
 

@@ -111,7 +111,7 @@ public class ImageDownloadActivity extends AppCompatActivity {
                 Elements imageElements = document.select("img");
                 int count = 0;
                 for (Element element : imageElements) {
-                    if (count >= 20) {
+                    if (count == 20) {
                         break;
                     }
                     String imageUrl = element.absUrl("src");
