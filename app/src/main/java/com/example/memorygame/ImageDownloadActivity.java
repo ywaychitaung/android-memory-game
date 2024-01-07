@@ -77,7 +77,7 @@ public class ImageDownloadActivity extends AppCompatActivity {
                         downloadtask.execute(url);
                         isDownloading = true;
                     } else {
-                        Toast.makeText(ImageDownloadActivity.this, "Please enter a URL", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ImageDownloadActivity.this, "Please enter a website", Toast.LENGTH_SHORT).show();
                     }
                     InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(urlEditText.getWindowToken(), 0);

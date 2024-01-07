@@ -18,7 +18,7 @@
             android:layout_width="151dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:hint="Enter URL" />
+            android:hint="Enter a website" />
 
         <Button
             android:id="@+id/fetchButton"
