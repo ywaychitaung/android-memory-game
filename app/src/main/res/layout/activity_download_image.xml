@@ -265,7 +265,7 @@
             android:layout_width="144dp"
             android:layout_height="27dp"
             android:layout_weight="1"
-            android:text="Choose"
+            android:text="Select"
             android:visibility="invisible"
             />
 

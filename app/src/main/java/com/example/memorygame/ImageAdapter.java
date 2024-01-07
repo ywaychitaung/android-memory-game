@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.media.MediaPlayer;
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -90,10 +89,10 @@ public class ImageAdapter extends ArrayAdapter<Bitmap> {
 
             if(matchedImgs == imgSize){
                 this.score += 1;
-                ((CardActivity) getContext()).increaseScore(1);
+                ((GameActivity) getContext()).increaseScore(1);
 
-                ((CardActivity)getContext()).writeFile(score);
-                String time = ((CardActivity) getContext()).getTime();
+                ((GameActivity)getContext()).writeFile(score);
+                String time = ((GameActivity) getContext()).getTime();
                 AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
                 dialog.setTitle("Congratulations!");
                 dialog.setMessage("Score: "+ score+" \nTime: "+time);
@@ -101,7 +100,7 @@ public class ImageAdapter extends ArrayAdapter<Bitmap> {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         Context context = dialog.getContext();
-                        Intent intent = new Intent(context, CardActivity.class);
+                        Intent intent = new Intent(context, GameActivity.class);
                         context.startActivity(intent);
                     }
                 });
@@ -109,7 +108,7 @@ public class ImageAdapter extends ArrayAdapter<Bitmap> {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         Context context = dialog.getContext();
-                        Intent intent = new Intent(context, MainActivity.class);
+                        Intent intent = new Intent(context, ImageDownloadActivity.class);
                         context.startActivity(intent);
                     }
                 });
@@ -119,7 +118,7 @@ public class ImageAdapter extends ArrayAdapter<Bitmap> {
                 Toast.makeText(getContext(), "Match!", Toast.LENGTH_SHORT).show();
 
                 // Increase the score by 1
-                ((CardActivity) getContext()).increaseScore(1);
+                ((GameActivity) getContext()).increaseScore(1);
                 this.score += 1;
 
                 // disable clicking

@@ -2,16 +2,12 @@ package com.example.memorygame;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.graphics.Bitmap;
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -20,7 +16,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class CardActivity extends AppCompatActivity {
+public class GameActivity extends AppCompatActivity {
 
     private List<Bitmap> duplicatedImages;
     private List<Integer> revealedImagesPositions;
@@ -47,8 +43,8 @@ public class CardActivity extends AppCompatActivity {
         scoreTextView = findViewById(R.id.score_text_view);
         updateScoreText();
 
-        // Get the selected images from MainActivity
-        MyApplication myApp = (MyApplication) getApplicationContext();
+        // Get the selected images from ImageDownloadActivity
+        App myApp = (App) getApplicationContext();
         List<Bitmap> selectedImages = myApp.getSelectedImages();
 
         // Duplicate the selected images

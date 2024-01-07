@@ -41,7 +41,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class ImageDownloadActivity extends AppCompatActivity {
     private EditText urlEditText;
     private Button fetchButton;
     private List<ImageView> imageViews;
@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_download_image);
 
         urlEditText = findViewById(R.id.urlEditText);
         fetchButton = findViewById(R.id.fetchButton);
@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
                         downloadtask.execute(url);
                         isDownloading = true;
                     } else {
-                        Toast.makeText(MainActivity.this, "Please enter a URL", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ImageDownloadActivity.this, "Please enter a URL", Toast.LENGTH_SHORT).show();
                     }
                     InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(urlEditText.getWindowToken(), 0);
@@ -99,14 +99,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // Choosing 6 image button, that launch into CardActivity, terminate the BGM and
+        // Choosing 6 image button, that launch into GameActivity, terminate the BGM and
         // start the Card Game BGM, past scores that are saved are accessed here
         chooseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MyApplication myApp = (MyApplication) getApplicationContext();
+                App myApp = (App) getApplicationContext();
                 myApp.setSelectedImages(selectedImages);
-                Intent intent = new Intent(MainActivity.this, CardActivity.class);
+                Intent intent = new Intent(ImageDownloadActivity.this, GameActivity.class);
                 intent.putExtra("fileData",readFile());
                 // stop the bgm service to switch to another music
                 Intent stopBGM = new Intent();
@@ -182,7 +182,7 @@ public class MainActivity extends AppCompatActivity {
                             selectedImages.remove(bitmap);
                         } else {
                             if (selectedImages.size() >= 6) {
-                                Toast.makeText(MainActivity.this, "You have reached the maximum selection", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(ImageDownloadActivity.this, "You have reached the maximum selection", Toast.LENGTH_SHORT).show();
                                 return;
                             }
                             Bitmap iconBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.icon);

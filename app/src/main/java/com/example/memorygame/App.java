@@ -5,7 +5,7 @@ import android.graphics.Bitmap;
 
 import java.util.List;
 
-public class MyApplication extends Application {
+public class App extends Application {
     private List<Bitmap> selectedImages;
 
     public List<Bitmap> getSelectedImages() {
