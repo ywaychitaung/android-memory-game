@@ -115,20 +115,16 @@ public class ImageAdapter extends ArrayAdapter<Bitmap> {
                 dialog.show();
             }
             else {
-                Toast.makeText(getContext(), "Match!", Toast.LENGTH_SHORT).show();
-
-                // Increase the score by 1
+                Toast.makeText(getContext(), "Matched!", Toast.LENGTH_SHORT).show();
                 ((GameActivity) getContext()).increaseScore(1);
                 this.score += 1;
 
-                // disable clicking
                 imageView.setOnClickListener(null);
                 revealedImages.get(0).setOnClickListener(null);
                 revealedImages.clear();
             }
 
         } else {
-            // If it's not a match, hide the first revealed image and remember the new one after a delay
             Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
                 @Override
@@ -138,7 +134,7 @@ public class ImageAdapter extends ArrayAdapter<Bitmap> {
                     revealedImagesPositions.clear();
                     revealedImages.clear();
                 }
-            }, 1000); // Delay of 1 second (adjust as needed)
+            }, 1000);
 
 
         }
@@ -158,21 +154,17 @@ public class ImageAdapter extends ArrayAdapter<Bitmap> {
 
         List<Bitmap> rowImages = new ArrayList<>();
 
-        // Calculate the start and end positions of the images for the current row
         int start = position * 3;
         int end = Math.min(start + 3, images.size());
 
-        // Extract the images for the current row
         if (start < end) {
             rowImages = images.subList(start, end);
         }
 
-        // Set all the initial images to the image_placeholder
         imageView1.setImageResource(R.drawable.image_placeholder);
         imageView2.setImageResource(R.drawable.image_placeholder);
         imageView3.setImageResource(R.drawable.image_placeholder);
 
-        // Set click listeners for the ImageViews
         imageView1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -194,7 +186,6 @@ public class ImageAdapter extends ArrayAdapter<Bitmap> {
             }
         });
 
-        // Hide any unused ImageViews in the layout
         if (rowImages.size() < 3) {
             if (imageView3.getVisibility() != View.GONE) {
                 imageView3.setVisibility(View.GONE);
@@ -207,26 +198,6 @@ public class ImageAdapter extends ArrayAdapter<Bitmap> {
         }
 
         return convertView;
-    }
-
-    //reveal/hide image animation
-    private void uncoverImage(ImageView imageView, int position){
-        ObjectAnimator animator1 = ObjectAnimator.ofFloat(imageView,
-                "scaleX", 1f, 0f);
-        ObjectAnimator animator2 = ObjectAnimator.ofFloat(imageView,
-                "scaleX", 0f,1f);
-        animator1.setInterpolator(new DecelerateInterpolator());
-        animator2.setInterpolator(new AccelerateInterpolator());
-        animator1.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                imageView.setVisibility(View.VISIBLE);
-                imageView.setImageBitmap(images.get(position));
-                super.onAnimationEnd(animation);
-                animator2.start();
-            }
-        });
-        animator1.start();
     }
 
     private void coverImage(ImageView imageView){
@@ -248,4 +219,22 @@ public class ImageAdapter extends ArrayAdapter<Bitmap> {
         animator1.start();
     }
 
+    private void uncoverImage(ImageView imageView, int position){
+        ObjectAnimator animator1 = ObjectAnimator.ofFloat(imageView,
+                "scaleX", 1f, 0f);
+        ObjectAnimator animator2 = ObjectAnimator.ofFloat(imageView,
+                "scaleX", 0f,1f);
+        animator1.setInterpolator(new DecelerateInterpolator());
+        animator2.setInterpolator(new AccelerateInterpolator());
+        animator1.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                imageView.setVisibility(View.VISIBLE);
+                imageView.setImageBitmap(images.get(position));
+                super.onAnimationEnd(animation);
+                animator2.start();
+            }
+        });
+        animator1.start();
+    }
 }

@@ -42,8 +42,6 @@ public class ImageDownloadActivity extends AppCompatActivity {
     public List<Bitmap> selectedImages;
 
     private ProgressBar progressBar;
-
-    // handle stopping download
     private boolean isDownloading;
     private DownloadImagesTask downloadtask;
 
@@ -57,7 +55,7 @@ public class ImageDownloadActivity extends AppCompatActivity {
         selectButton = findViewById(R.id.choose);
         selectButton.setEnabled(false);
         imageViews = new ArrayList<>();
-        // for adding views
+
         for (int i = 1; i <= 4; i++) {
             for (int j = 1; j <= 5; j++) {
                 int imageViewId = getResources().getIdentifier("imageView" + i + "_" + j, "id", getPackageName());
@@ -66,7 +64,6 @@ public class ImageDownloadActivity extends AppCompatActivity {
             }
         }
 
-        // For starting the download: Checks if a url is entered
         fetchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -90,9 +87,6 @@ public class ImageDownloadActivity extends AppCompatActivity {
 
             }
         });
-
-        // Choosing 6 image button, that launch into GameActivity, terminate the BGM and
-        // start the Card Game BGM, past scores that are saved are accessed here
         selectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -100,16 +94,13 @@ public class ImageDownloadActivity extends AppCompatActivity {
                 app.setSelectedImages(selectedImages);
                 Intent intent = new Intent(ImageDownloadActivity.this, GameActivity.class);
                 intent.putExtra("fileData",readFile());
-
                 startActivity(intent);
             }
         });
-
     }
 
 
     private class DownloadImagesTask extends AsyncTask<String, Integer, List<Bitmap>> {
-
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -150,7 +141,6 @@ public class ImageDownloadActivity extends AppCompatActivity {
         protected void onProgressUpdate(Integer... values) {
             super.onProgressUpdate(values);
             int progress = values[0];
-            // 在此处更新进度条的进度
             progressBar.setProgress(progress);
         }
 

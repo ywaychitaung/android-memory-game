@@ -17,49 +17,47 @@ import java.util.Collections;
 import java.util.List;
 
 public class GameActivity extends AppCompatActivity {
+    private List<Integer> matchedImageIndices;
 
-    private List<Bitmap> duplicatedImages;
-    private List<Integer> revealedImagesPositions;
-    private List<Integer> matchedImagesPositions;
-    private List<ImageView> revealedImage;
+    private List<Integer> openImageIndices;
+
     private int score;
-    private TextView scoreTextView;
+    private int secondsElapsed;
+    private TextView scoreDisplay;
 
-    private int mSeconds;
+    private List<Bitmap> gameImagePairs;
+
+    private List<ImageView> currentOpenImages;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_card);
 
-        revealedImagesPositions = new ArrayList<>();
-        matchedImagesPositions = new ArrayList<>();
-        revealedImage = new ArrayList<>();
+        openImageIndices = new ArrayList<>();
+        matchedImageIndices = new ArrayList<>();
+        currentOpenImages = new ArrayList<>();
 
         score = 0;
-        mSeconds = 0;
+        secondsElapsed = 0;
 
-        // Find the score TextView (FOR WHOEVER IS DOING SCORING)
-        scoreTextView = findViewById(R.id.score_text_view);
+        scoreDisplay = findViewById(R.id.score_text_view);
         updateScoreText();
 
-        // Get the selected images from ImageDownloadActivity
-        App myApp = (App) getApplicationContext();
-        List<Bitmap> selectedImages = myApp.getSelectedImages();
+        App app = (App) getApplicationContext();
+        List<Bitmap> selectedImages = app.getSelectedImages();
 
-        // Duplicate the selected images
-        duplicatedImages = new ArrayList<>();
+        gameImagePairs = new ArrayList<>();
         for (Bitmap bitmap : selectedImages) {
-            duplicatedImages.add(bitmap);
-            duplicatedImages.add(bitmap);
+            gameImagePairs.add(bitmap);
+            gameImagePairs.add(bitmap);
         }
 
-        // Shuffle the duplicated images randomly
-        Collections.shuffle(duplicatedImages);
+        Collections.shuffle(gameImagePairs);
 
-        // Display the shuffled duplicated images in a ListView
         ListView listView = findViewById(R.id.listView);
-        ImageAdapter adapter = new ImageAdapter(this, duplicatedImages, revealedImagesPositions, matchedImagesPositions,revealedImage,score);
+        ImageAdapter adapter = new ImageAdapter(this, gameImagePairs, openImageIndices, matchedImageIndices, currentOpenImages,score);
 
         listView.setAdapter(adapter);
         runTimer();
@@ -82,7 +80,7 @@ public class GameActivity extends AppCompatActivity {
         try{
             File parent = targetFile.getParentFile();
             if(!parent.exists() && !parent.mkdirs()){
-                throw new IllegalStateException("Couldn't create dir: "+ parent);
+                throw new IllegalStateException("Cannot create a folder: "+ parent);
             }
             FileOutputStream fos = new FileOutputStream(targetFile,true);
             fos.write(content.getBytes());
@@ -93,10 +91,9 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void updateScoreText() {
-        scoreTextView.setText(score + " of 6 matches");
+        scoreDisplay.setText(score + " of 6 matches");
     }
 
-    // Call this method whenever a match is found
     public void increaseScore(int increment) {
         score += increment;
         updateScoreText();
@@ -108,17 +105,17 @@ public class GameActivity extends AppCompatActivity {
         handler.post(new Runnable() {
             @Override
             public void run() {
-                int minutes = mSeconds / 60;
-                int seconds = mSeconds % 60;
+                int minutes = secondsElapsed / 60;
+                int seconds = secondsElapsed % 60;
                 String timeString = String.format("%02d:%02d", minutes, seconds);
                 timer.setText("Time elapsed: " + timeString);
 
-                mSeconds++;
+                secondsElapsed++;
 
                 if (score >= 6) {
-                    handler.removeCallbacksAndMessages(null); // Stop the timer
+                    handler.removeCallbacksAndMessages(null);
                 } else {
-                    handler.postDelayed(this, 1000); // Continue the timer
+                    handler.postDelayed(this, 1000);
                 }
             }
         });
@@ -127,7 +124,7 @@ public class GameActivity extends AppCompatActivity {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        outState.putInt("seconds", mSeconds);
+        outState.putInt("seconds", secondsElapsed);
         outState.putInt("score", score);
     }
 
@@ -135,7 +132,7 @@ public class GameActivity extends AppCompatActivity {
     public void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
 
-        mSeconds = savedInstanceState.getInt("seconds");
+        secondsElapsed = savedInstanceState.getInt("seconds");
         score = savedInstanceState.getInt("score");
         updateScoreText();
 
