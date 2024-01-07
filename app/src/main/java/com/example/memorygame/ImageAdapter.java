@@ -52,7 +52,7 @@ public class ImageAdapter extends ArrayAdapter<Bitmap> {
 
     @Override
     public int getCount() {
-        return gameImagePairs.size() / 3; // Divide by 3 to get the number of rows
+        return gameImagePairs.size() / 3;
     }
 
     //pass imageView from clickListener

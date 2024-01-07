@@ -68,28 +68,7 @@ public class GameActivity extends AppCompatActivity {
         String[] time = timer.getText().toString().split(" ");
         return time[2];
     }
-
-    public void writeFile(int score){
-        String time = getTime();
-        String filePath = "MemoryGame";
-        String filename = "ScoreHistory.txt";
-        File targetFile = new File(this.getFilesDir(),filePath+"/"+filename);
-
-        String content = score + " \t" + time+"\n";
-
-        try{
-            File parent = targetFile.getParentFile();
-            if(!parent.exists() && !parent.mkdirs()){
-                throw new IllegalStateException("Cannot create a folder: "+ parent);
-            }
-            FileOutputStream fos = new FileOutputStream(targetFile,true);
-            fos.write(content.getBytes());
-            fos.close();
-        }catch (IOException e){
-            e.printStackTrace();
-        }
-    }
-
+    
     private void updateScoreText() {
         scoreDisplay.setText(score + " of 6 matches");
     }
