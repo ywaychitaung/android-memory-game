@@ -6,10 +6,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -19,8 +15,6 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 import android.content.Intent;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.jsoup.Jsoup;
@@ -104,14 +98,11 @@ public class ImageDownloadActivity extends AppCompatActivity {
         chooseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                App myApp = (App) getApplicationContext();
-                myApp.setSelectedImages(selectedImages);
+                App app = (App) getApplicationContext();
+                app.setSelectedImages(selectedImages);
                 Intent intent = new Intent(ImageDownloadActivity.this, GameActivity.class);
                 intent.putExtra("fileData",readFile());
-                // stop the bgm service to switch to another music
-                Intent stopBGM = new Intent();
-                stopBGM.setAction("Stop BGM");
-                sendBroadcast(stopBGM);
+
                 startActivity(intent);
             }
         });
@@ -182,10 +173,10 @@ public class ImageDownloadActivity extends AppCompatActivity {
                             selectedImages.remove(bitmap);
                         } else {
                             if (selectedImages.size() >= 6) {
-                                Toast.makeText(ImageDownloadActivity.this, "You have reached the maximum selection", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(ImageDownloadActivity.this, "Only select 6 images", Toast.LENGTH_SHORT).show();
                                 return;
                             }
-                            Bitmap iconBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.icon);
+                            Bitmap iconBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.checkicon);
                             Bitmap resizedIconBitmap = Bitmap.createScaledBitmap(iconBitmap, 100, 100, false);
                             Bitmap resultBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), bitmap.getConfig());
                             Canvas canvas = new Canvas(resultBitmap);
@@ -231,37 +222,6 @@ public class ImageDownloadActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         return null;
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu,menu);
-        return true;
-    }
-
-    // History button to check pass scores
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if(item.getItemId() == R.id.history){
-            String fileData = readFile();
-            Log.i("fileData",fileData);
-
-            Log.i("menu","item history");
-            AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-            dialog.setTitle("Score History");
-            if(fileData.equals("") || fileData == null){
-                dialog.setMessage("There is no records.");
-            }
-            else{
-                dialog.setMessage("No.   Score   Time Taken\n"+fileData);
-            }
-
-            dialog.setCancelable(true);
-            dialog.show();
-        }
-
-        return true;
     }
 
     public String readFile(){
