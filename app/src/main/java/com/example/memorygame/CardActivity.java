@@ -132,7 +132,7 @@ public class CardActivity extends AppCompatActivity {
                 int minutes = mSeconds / 60;
                 int seconds = mSeconds % 60;
                 String timeString = String.format("%02d:%02d", minutes, seconds);
-                timer.setText("Time: " + timeString);
+                timer.setText("Time elapsed: " + timeString);
 
                 mSeconds++;
 
