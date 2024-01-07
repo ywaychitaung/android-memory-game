@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.content.Intent;
 
@@ -37,6 +38,7 @@ public class ImageDownloadActivity extends AppCompatActivity {
     public List<Bitmap> selectedImages;
 
     private ProgressBar progressBar;
+    private TextView progressText;
     private boolean isDownloading;
     private DownloadImagesTask downloadtask;
 
@@ -49,6 +51,11 @@ public class ImageDownloadActivity extends AppCompatActivity {
         fetchButton = findViewById(R.id.fetchButton);
         selectButton = findViewById(R.id.choose);
         selectButton.setEnabled(false);
+
+        progressText = findViewById(R.id.progressText);
+        progressBar = findViewById(R.id.progressBar);
+        progressBar.setMax(20);
+
         imageViews = new ArrayList<>();
 
         for (int i = 1; i <= 4; i++) {
@@ -98,7 +105,7 @@ public class ImageDownloadActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            progressBar = findViewById(R.id.progressBar);
+            progressText.setText("Downloading 0 of 20 images...");
             progressBar.setVisibility(View.VISIBLE);
         }
 
@@ -136,7 +143,10 @@ public class ImageDownloadActivity extends AppCompatActivity {
             super.onProgressUpdate(values);
             int progress = values[0];
             progressBar.setProgress(progress);
+            progressText.setVisibility(View.VISIBLE);
+            progressText.setText("Downloading " + progress + " of " + progressBar.getMax() + " images...");
         }
+
 
         @Override
         protected void onPostExecute(List<Bitmap> bitmaps) {
@@ -177,6 +187,7 @@ public class ImageDownloadActivity extends AppCompatActivity {
                 });
             }
             progressBar.setVisibility(View.GONE);
+            progressText.setVisibility(View.GONE);
         }
     }
 
