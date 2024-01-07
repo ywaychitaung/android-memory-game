@@ -1,6 +1,5 @@
 package com.example.memorygame;
 
-import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -39,7 +38,7 @@ public class ImageDownloadActivity extends AppCompatActivity {
     private EditText urlEditText;
     private Button fetchButton;
     private List<ImageView> imageViews;
-    private Button chooseButton;
+    private Button selectButton;
     public List<Bitmap> selectedImages;
 
     private ProgressBar progressBar;
@@ -48,7 +47,6 @@ public class ImageDownloadActivity extends AppCompatActivity {
     private boolean isDownloading;
     private DownloadImagesTask downloadtask;
 
-    @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,8 +54,8 @@ public class ImageDownloadActivity extends AppCompatActivity {
 
         urlEditText = findViewById(R.id.urlEditText);
         fetchButton = findViewById(R.id.fetchButton);
-        chooseButton = findViewById(R.id.choose);
-        chooseButton.setEnabled(false);
+        selectButton = findViewById(R.id.choose);
+        selectButton.setEnabled(false);
         imageViews = new ArrayList<>();
         // for adding views
         for (int i = 1; i <= 4; i++) {
@@ -95,7 +93,7 @@ public class ImageDownloadActivity extends AppCompatActivity {
 
         // Choosing 6 image button, that launch into GameActivity, terminate the BGM and
         // start the Card Game BGM, past scores that are saved are accessed here
-        chooseButton.setOnClickListener(new View.OnClickListener() {
+        selectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 App app = (App) getApplicationContext();
@@ -158,7 +156,7 @@ public class ImageDownloadActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(List<Bitmap> bitmaps) {
-            chooseButton.setVisibility(View.VISIBLE);
+            selectButton.setVisibility(View.VISIBLE);
             int imageCount = Math.min(bitmaps.size(), imageViews.size());
             selectedImages = new ArrayList<>();
             for (int i = 0; i < imageCount; i++) {
@@ -186,9 +184,9 @@ public class ImageDownloadActivity extends AppCompatActivity {
                             selectedImages.add(bitmap);
                         }
                         if (selectedImages.size() >= 6) {
-                            chooseButton.setEnabled(true);
+                            selectButton.setEnabled(true);
                         } else {
-                            chooseButton.setEnabled(false);
+                            selectButton.setEnabled(false);
                         }
                     }
 
