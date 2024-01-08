@@ -54,14 +54,12 @@ public class ImageAdapter extends ArrayAdapter<Bitmap> {
     private MediaPlayer mediaPlayer;
 
     private void playMatchSound() {
-        // Check if mediaPlayer is already in use and release it if necessary
         if (mediaPlayer != null) {
             mediaPlayer.release();
         }
-        mediaPlayer = MediaPlayer.create(getContext(), R.raw.match_sound); // replace "match_sound" with the name of your audio file
+        mediaPlayer = MediaPlayer.create(getContext(), R.raw.match_sound);
         mediaPlayer.start();
 
-        // Set an OnCompletionListener to release the MediaPlayer once the sound has finished playing
         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
